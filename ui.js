@@ -5,6 +5,7 @@ var svgScale = speakerSize / origSize;
 
 var speakerTemplate;
 var canvas = null;
+var audioCtx = null;
 
 var SourceUI = function(options, callback) {
   speakerTemplate.clone(function(clone){
@@ -42,9 +43,10 @@ var ListenerUI = function(options, callback) {
 }
 
 window.onload = function(){
+  audioCtx = new AudioContext();
+  canvas = new fabric.Canvas('audio-space');
   fabric.loadSVGFromURL("/speaker.svg", function(object, options) {
     speakerTemplate = fabric.util.groupSVGElements(object, options);
-    canvas = new fabric.Canvas('audio-space');
     canvas.backgroundColor = "#313759";
     speakerTemplate.set({
       left: 0,
@@ -89,5 +91,9 @@ window.onload = function(){
     });
 
     window.onresize();
+  });
+
+  var stem = new StemNode(5, 5, 'red', 'ymo.mp3', function() {
+    stem.playSound();
   });
 };
