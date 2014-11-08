@@ -7,26 +7,11 @@ var speakerTemplate;
 var canvas = null;
 var audioCtx = null;
 
-var ListenerUI = function(options, callback) {
-  console.log("whoa");
-  this.ui = new fabric.Triangle({
-    left: options.left,
-    top: options.top,
-    height: speakerSize,
-    width: speakerSize,
-    fill: "#BCBF50",
-    lockScalingX: true,
-    lockScalingY: true
-  });
-  canvas.add(this.ui);
-  canvas.renderAll();
-  if(callback) {
-    window.setTimeout(callback, 1);
-  }
-}
+var listeners = [];
+var sources = [];
 
 window.onload = function(){
-  audioCtx = new AudioContext();
+  audioCtx = new (window.AudioContext || webkitAudioContext)();
   canvas = new fabric.Canvas('audio-space');
   fabric.loadSVGFromURL("/speaker.svg", function(object, options) {
     speakerTemplate = fabric.util.groupSVGElements(object, options);
@@ -59,15 +44,14 @@ window.onload = function(){
     };
     window.onresize();
 
-    new ListenerUI({
-      top: 180,
-      left: 200
-    });
+    var listener = new ListenerNode(200,200);
+    listeners.push(listener);
 
     var stem = new StemNode(100, 100, 'ymo.mp3', function() {
       canvas.renderAll();
       stem.playSound();
     });
+    sources.push(stem);
 
   });
 };

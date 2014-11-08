@@ -47,12 +47,11 @@ StemNode.prototype.fabricate = function(done) {
   }.bind(this));
 };
 
-
 StemNode.prototype.playSound = function(time) {
   if(time == undefined) { time = audioCtx.currentTime };
   var source = audioCtx.createBufferSource();
   source.buffer = this.buffer;
   source.loop = true;
   source.connect(audioCtx.destination);
-  source.start(time);
+//  source.start(time);
 };
