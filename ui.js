@@ -3,7 +3,7 @@ var footerHeight = 100;
 window.onload = function(){
   fabric.loadSVGFromURL("/speaker.svg", function(objects, options) {
     var speaker = fabric.util.groupSVGElements(objects, options);
-    var canvas = new fabric.Canvas('test');
+    var canvas = new fabric.Canvas('audio-space');
     var speakerSize = 32;
     var svgScale = 0.5;
     speaker.set({
