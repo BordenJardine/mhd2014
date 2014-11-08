@@ -1,23 +1,35 @@
 var footerHeight = 100;
+var speakerSize = 32;
+var origSize = 500;
+var svgScale = speakerSize / origSize;
 
 var speakerTemplate = null;
 
 var SourceUI = function(options) {
-  this.ui = fabric.util.object.clone(speakerTemplate)
+  this.ui = new fabric.Group(speakerTemplate.paths.map(function(path){
+    var clone = fabric.util.object.clone(path);
+    console.log(clone, path);
+    return clone;
+  }));
+  this.canvas = options.canvas;
+
   this.ui.set({
     left: options.left,
-    top: options.top
+    top: options.top,
+    width: speakerSize,
+    height: speakerSize,
+    lockScalingX: true,
+    lockScalingY: true,
   });
-  this.canvas = options.canvas;
+
   this.canvas.add(this.ui);
 };
 
 window.onload = function(){
-  fabric.Image.fromURL("/speaker.svg", function(object) {
-    speakerTemplate = object; //fabric.util.groupSVGElements(object, options);
+  fabric.loadSVGFromURL("/speaker.svg", function(object, options) {
+    speakerTemplate = fabric.util.groupSVGElements(object, options);
     var canvas = new fabric.Canvas('audio-space');
-    var speakerSize = 32;
-    var svgScale = 0.5;
+    canvas.backgroundColor = "#313759";
     speakerTemplate.set({
       left: 80,
       top: 175,
@@ -26,7 +38,17 @@ window.onload = function(){
       scaleX: svgScale,
       scaleY: svgScale,
       lockScalingX: true,
-      lockScalingY: true
+      lockScalingY: true,
+    });
+
+    speakerTemplate.paths.forEach(function(path){
+      var fill = "#BCBF50";
+      path.stroke = fill;
+      if(path.fill) {
+        path.fill = fill;
+      }
+      path.scaleX = svgScale;
+      path.scaleY = svgScale;
     });
 
     window.onresize = function() {
@@ -35,12 +57,18 @@ window.onload = function(){
         height: window.innerHeight - footerHeight
       });
       canvas.renderAll();
-      console.log("render!", canvas.width, canvas.height);
     };
 
+//    canvas.add(speakerTemplate);
     var sourceUI = new SourceUI({
       top: 80,
       left: 175,
+      canvas: canvas
+    });
+
+    var sourceUI = new SourceUI({
+      top: 80,
+      left: 275,
       canvas: canvas
     });
 
