@@ -1,12 +1,24 @@
 var footerHeight = 100;
 
+var speakerTemplate = null;
+
+var SourceUI = function(options) {
+  this.ui = fabric.util.object.clone(speakerTemplate)
+  this.ui.set({
+    left: options.left,
+    top: options.top
+  });
+  this.canvas = options.canvas;
+  this.canvas.add(this.ui);
+};
+
 window.onload = function(){
-  fabric.loadSVGFromURL("/speaker.svg", function(objects, options) {
-    var speaker = fabric.util.groupSVGElements(objects, options);
+  fabric.Image.fromURL("/speaker.svg", function(object) {
+    speakerTemplate = object; //fabric.util.groupSVGElements(object, options);
     var canvas = new fabric.Canvas('audio-space');
     var speakerSize = 32;
     var svgScale = 0.5;
-    speaker.set({
+    speakerTemplate.set({
       left: 80,
       top: 175,
       width: speakerSize / svgScale,
@@ -16,19 +28,24 @@ window.onload = function(){
       lockScalingX: true,
       lockScalingY: true
     });
-    canvas.add(speaker);
+
     window.onresize = function() {
       canvas.setDimensions({
-        width: document.width,
-        height: document.height - footerHeight
+        width: window.innerWidth,
+        height: window.innerHeight - footerHeight
       });
       canvas.renderAll();
+      console.log("render!", canvas.width, canvas.height);
     };
+
+    var sourceUI = new SourceUI({
+      top: 80,
+      left: 175,
+      canvas: canvas
+    });
+
     window.onresize();
   });
-};
-
-var SourceUI = function() {
 };
 
 /*
