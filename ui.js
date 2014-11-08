@@ -1,6 +1,6 @@
 var footerHeight = 100;
 var speakerSize = 64;
-var origSize = 128;
+var origSize = 64;
 var svgScale = speakerSize / origSize;
 
 var speakerTemplate;
@@ -14,6 +14,7 @@ var SourceUI = function(options, callback) {
       top: options.top,
       lockScalingX: true,
       lockScalingY: true,
+      angle: 90
     });
     canvas.add(this.ui);
     canvas.renderAll();
@@ -21,6 +22,24 @@ var SourceUI = function(options, callback) {
       callback(this);
   });
 };
+
+var ListenerUI = function(options, callback) {
+  console.log("whoa");
+  this.ui = new fabric.Triangle({
+    left: options.left,
+    top: options.top,
+    height: speakerSize,
+    width: speakerSize,
+    fill: "#BCBF50",
+    lockScalingX: true,
+    lockScalingY: true
+  });
+  canvas.add(this.ui);
+  canvas.renderAll();
+  if(callback) {
+    window.setTimeout(callback, 1);
+  }
+}
 
 window.onload = function(){
   fabric.loadSVGFromURL("/speaker.svg", function(object, options) {
@@ -54,16 +73,19 @@ window.onload = function(){
       canvas.renderAll();
     };
 
-    var sourceUI = new SourceUI({
+    new SourceUI({
       top: 80,
       left: 175,
-      canvas: canvas
     });
 
-    var sourceUI = new SourceUI({
+    new SourceUI({
       top: 80,
       left: 275,
-      canvas: canvas
+    });
+
+    new ListenerUI({
+      top: 180,
+      left: 200
     });
 
     window.onresize();
