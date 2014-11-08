@@ -7,23 +7,6 @@ var speakerTemplate;
 var canvas = null;
 var audioCtx = null;
 
-var SourceUI = function(options, callback) {
-  speakerTemplate.clone(function(clone){
-    this.ui = clone;
-    this.ui.set({
-      left: options.left,
-      top: options.top,
-      lockScalingX: true,
-      lockScalingY: true,
-      angle: 90
-    });
-    canvas.add(this.ui);
-    canvas.renderAll();
-    if(callback)
-      callback(this);
-  });
-};
-
 var ListenerUI = function(options, callback) {
   console.log("whoa");
   this.ui = new fabric.Triangle({
@@ -74,26 +57,17 @@ window.onload = function(){
       });
       canvas.renderAll();
     };
-
-    new SourceUI({
-      top: 80,
-      left: 175,
-    });
-
-    new SourceUI({
-      top: 80,
-      left: 275,
-    });
+    window.onresize();
 
     new ListenerUI({
       top: 180,
       left: 200
     });
 
-    window.onresize();
-  });
+    var stem = new StemNode(100, 100, 'ymo.mp3', function() {
+      canvas.renderAll();
+      stem.playSound();
+    });
 
-  var stem = new StemNode(5, 5, 'red', 'ymo.mp3', function() {
-    stem.playSound();
   });
 };

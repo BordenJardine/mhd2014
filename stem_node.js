@@ -1,11 +1,12 @@
-var StemNode = function(x, y, color, path, done) {
+var StemNode = function(x, y, path, done) {
   this.x = x;
   this.y = y;
   this.buffer;
   this.pannerNode;
 
-  this.fabricate(color);
-  this.bufferSound(path, done);
+  this.fabricate(function(){
+    this.bufferSound(path, done);
+  }.bind(this));
 };
 
 StemNode.prototype.bufferSound = function(url, done) {
@@ -24,26 +25,26 @@ StemNode.prototype.bufferSound = function(url, done) {
   request.send();
 };
 
-StemNode.prototype.onMove = function(e, element) {
-  this.x = element.getLeft();
-  this.y = element.getTop();
+StemNode.prototype.onMove = function(e) {
+  this.x = this.ui.getLeft();
+  this.y = this.ui.getTop();
 };
 
-StemNode.prototype.fabricate = function(color) {
-  var self = this;
-  var square = new fabric.Rect({
-    left: this.x,
-    top: this.y,
-    fill: color,
-    width: 20,
-    height: 20
-  });
-  square.lockScalingX = true;
-  square.lockScalingY = true;
-  square.on('moving', function(e){
-    self.onMove(e);
-  });
-  canvas.add(square, square);
+StemNode.prototype.fabricate = function(done) {
+  speakerTemplate.clone(function(clone){
+    this.ui = clone;
+    this.ui.set({
+      left: this.x,
+      top: this.y,
+      lockScalingX: true,
+      lockScalingY: true,
+      angle: 90
+    });
+    this.ui.on('moving', this.onMove.bind(this));
+    canvas.add(this.ui);
+    canvas.renderAll();
+    done();
+  }.bind(this));
 };
 
 
@@ -55,4 +56,3 @@ StemNode.prototype.playSound = function(time) {
   source.connect(audioCtx.destination);
   source.start(time);
 };
-
