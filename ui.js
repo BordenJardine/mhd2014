@@ -9,7 +9,7 @@ var canvas = null;
 var audioCtx = null;
 
 var filesToPlay = ['jesu_joy/1.mp3', 'jesu_joy/2.mp3', 'jesu_joy/3.mp3', 'jesu_joy/4.mp3', 'jesu_joy/5.mp3'];
-var listeners = [];
+listeners = [];
 var sources = [];
 
 window.onload = function(){
@@ -57,7 +57,7 @@ window.onload = function(){
 
 var createSourceNodes = function(done) {
       var callbackCounter = 1;
-      
+
       var checkDone = function() {
         if(callbackCounter++ == filesToPlay.length) {
           done();

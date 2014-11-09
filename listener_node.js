@@ -10,6 +10,10 @@ var ListenerNode = function(x, y, done) {
 ListenerNode.prototype.setPosition = function(x,y) {
   this.x = x;
   this.y = y;
+  this.ui.left = x;
+  this.ui.top = y;
+  this.ui.setCoords();
+  canvas.renderAll();
   this.audioListener.setPosition(this.x, this.y, 0);
 };
 
