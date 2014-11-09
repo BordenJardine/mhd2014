@@ -7,7 +7,7 @@ var speakerTemplate;
 var canvas = null;
 var audioCtx = null;
 
-var filesToPlay = ['ymo.mp3', 'ymo.mp3', 'ymo.mp3'];
+var filesToPlay = ['ymo.mp3', 'ymo.mp3', 'ymo.mp3', 'ymo.mp3', 'ymo.mp3'];
 var listeners = [];
 var sources = [];
 
@@ -60,9 +60,9 @@ window.onload = function(){
 
 var lineUp = function(){
   sources.forEach(function(source, i){
-    source.angle = 90;
+    source.setAngle(90);
     if(sources.length !== 1) {
-      source.setPosition(100 + i * 266 / (sources.length - 1), 80);
+      source.setPosition(50 + i * 300 / (sources.length - 1), 80);
     } else {
       source.setPosition(233, 80);
     }
@@ -71,11 +71,25 @@ var lineUp = function(){
 
 var stack = function() {
   sources.forEach(function(source){
-    source.angle = 90;
-    source.setPosition(233, 80);
+    source.setAngle(90);
+    source.setPosition(200, 80);
   });
 }
 
 var semiCircle = function() {
-
+  sources.forEach(function(source, i){
+    if(sources.length !== 1) {
+      var degrees = i * 180 / (sources.length - 1);
+      source.setAngle(degrees);
+      var radians = degrees / 180 * Math.PI;
+      var radius = 150;
+      var x = 200 - radius * Math.cos(radians);
+      var y = 288 - radius * Math.sin(radians);
+      console.log(x, y, radians, degrees);
+      source.setPosition(x, y);
+    } else {
+      source.setAngle(90);
+      source.setPosition(233, 80);
+    }
+  });
 }

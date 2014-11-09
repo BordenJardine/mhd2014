@@ -33,6 +33,11 @@ StemNode.prototype.setPosition = function(x, y) {
   canvas.renderAll();
 }
 
+StemNode.prototype.setAngle = function(degrees) {
+  this.ui.setAngle(degrees);
+  canvas.renderAll();
+}
+
 StemNode.prototype.onMove = function(e) {
   this.x = this.ui.getLeft();
   this.y = this.ui.getTop();
@@ -44,6 +49,8 @@ StemNode.prototype.fabricate = function(done) {
     this.ui.set({
       left: this.x,
       top: this.y,
+      originX: 'center',
+      originY: 'center',
       lockScalingX: true,
       lockScalingY: true,
       angle: 90
