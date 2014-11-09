@@ -31,16 +31,13 @@ ListenerNode.prototype.onRotate = function(e) {
   var xDir = Math.cos(rads);
   var yDir = Math.sin(rads);
   console.log('listener', xDir, yDir);
-  this.audioListener.setOrientation(xDir, yDir, -1, 0, 1, 0);
+  this.audioListener.setOrientation(xDir, yDir, 0, 0, 0, 1);
 };
 
 ListenerNode.prototype.onMove = function(e) {
   this.x = this.ui.getLeft();
   this.y = this.ui.getTop();
   this.audioListener.setPosition(this.x, this.y, 0);
-  sources.forEach(function(source){
-    source.updateAngleGain();
-  });
 };
 
 ListenerNode.prototype.fabricate = function(done) {
@@ -49,6 +46,8 @@ ListenerNode.prototype.fabricate = function(done) {
     top: this.y,
     height: speakerSize * 0.75,
     width: speakerSize * 0.75,
+    originX: 'center',
+    originY: 'center',
     fill: "#BCBF50",
     stroke: "#2BADB1",
     strokeWidth: 3,

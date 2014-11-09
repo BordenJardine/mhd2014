@@ -12,7 +12,7 @@ var speakerTemplate;
 var canvas = null;
 var audioCtx = null;
 
-var filesToPlay = ['audio/440.ogg'];
+var filesToPlay = ['audio/jesu_joy/1.mp3'];
 var listeners = [];
 var sources = [];
 
