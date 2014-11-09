@@ -26,6 +26,11 @@ ListenerNode.prototype.setPosition = function(x,y) {
   canvas.renderAll();
 };
 
+ListenerNode.prototype.setAngle = function(degrees) {
+  this.ui.angle = degrees;
+  this.onRotate();
+  canvas.renderAll();
+}
 
 ListenerNode.prototype.onRotate = function(e) {
   var rads = this.ui.angle * TO_RADIANS;

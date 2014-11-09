@@ -61,7 +61,25 @@ var linear_KO_z = linear_Kalman_z[1];
 
 var timetime = Date.now();
 
-if (window.DeviceMotionEvent != undefined) {
+if (window.DeviceOrientationEvent) {
+  // Listen for the deviceorientation event and handle the raw data
+  window.addEventListener('deviceorientation', function(eventData) {
+    // gamma is the left-to-right tilt in degrees, where right is positive
+    var tiltLR = eventData.gamma;
+
+    // beta is the front-to-back tilt in degrees, where front is positive
+    var tiltFB = eventData.beta;
+
+    // alpha is the compass direction the device is facing in degrees
+    var dir = eventData.alpha
+
+    // call our orientation event handler
+    if(listeners && listeners[0]) {
+      listeners[0].setAngle(dir);
+      listeners[0].setPosition(168,168);
+    }
+  }, false);
+} else if (window.DeviceMotionEvent != undefined) {
     window.ondevicemotion = function(e) {
 
         if (LISTENER_MODE != "Tilt"){
