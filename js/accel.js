@@ -1,5 +1,15 @@
 var LISTENER_MODE = "Tilt"; // "Drag"
 
+function setListenerMode(){
+    console.log('Old mode: ' + LISTENER_MODE);
+    var radios = document.getElementsByName("listener_mode");
+    for (var i=0; i<radios.length; i++){
+        if (radios[i].checked) { LISTENER_MODE = radios[i].value;
+        }
+    }
+    console.log('New mode: ' + LISTENER_MODE);
+}
+
 var r_mult = 10;                    //TODO! keep in mind :)
 var gravity_alpha = 0.8;
 
@@ -55,7 +65,7 @@ if (window.DeviceMotionEvent != undefined) {
     window.ondevicemotion = function(e) {
 
         if (LISTENER_MODE != "Tilt"){
-            console.log("not in tilt mode!");
+            // console.log("not in tilt mode!");
             return;
         }
 
