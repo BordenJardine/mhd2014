@@ -45,15 +45,15 @@ KalmanModel = (function(){
 
     //update
     this.y_k = o.z_k.subtract(o.H_k.x(this.x_k_k_));//"observation residual"     (z_k is acceleration)(H_k == wiki's G_k == effect of accel on system!)
-    console.log("y_k: " + this.y_k.elements);
+    // console.log("y_k: " + this.y_k.elements);
     this.S_k = o.H_k.x(this.P_k_k_.x(o.H_k.transpose())).add(o.R_k);//"residual covariance"
-    console.log("S_k: " + this.S_k.elements);
+    // console.log("S_k: " + this.S_k.elements);
     this.K_k = this.P_k_k_.x(o.H_k.transpose().x(this.S_k.inverse()));//"Optimal Kalman gain"
-    console.log("K_k: " + this.K_k.elements);
+    // console.log("K_k: " + this.K_k.elements);
     this.x_k = this.x_k_k_.add(this.K_k.x(this.y_k));
-    console.log("x_k: " + this.x_k.elements);
+    // console.log("x_k: " + this.x_k.elements);
     this.P_k = this.I.subtract(this.K_k.x(o.H_k)).x(this.P_k_k_);
-    console.log("P_k: " + this.P_k.elements);
+    // console.log("P_k: " + this.P_k.elements);
   }
 
   return KalmanModel;
