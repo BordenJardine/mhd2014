@@ -69,3 +69,26 @@ button {
   left: 0px;
   right: 0px;
 }
+
+button {
+  width: 50px;
+  height: 35px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+button.line {
+  background-image: url('line.png');
+}
+
+button.circle {
+  background-image: url('surround.png');
+}
+
+button.semicircle {
+  background-image: url('semicircle.png');
+}
+
+button.stack {
+  background-image: url('point.png');
+}
