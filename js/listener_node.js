@@ -3,15 +3,21 @@ var ListenerNode = function(x, y, done) {
   this.y = y;
   this.audioListener = audioCtx.listener;
   this.audioListener.setPosition(x, y, 0);
+  this.onXBoundary = false;
+  this.onYBoundary = false;
 
   this.fabricate(done);
 };
 
 ListenerNode.prototype.setPosition = function(x,y) {
-  if(x < 0){ x = 0 };
-  if(x > maxX){ x = maxX };
-  if(y < 0){ y = 0 };
-  if(y > maxY){ y = maxY };
+  xRes = checkBoundary(x, maxX);
+  yRes = checkBoundary(y, maxY);
+
+  this.onXBoundary = xRes.onBoundary;
+  this.onYBoundary = yRes.onBoundary;
+
+  x = xRes.value;
+  y = xRes.value;
 
   this.ui.left = x;
   this.ui.top = y;
@@ -19,6 +25,7 @@ ListenerNode.prototype.setPosition = function(x,y) {
   this.onMove();
   this.audioListener.setPosition(this.x, this.y, 0);
 };
+
 
 ListenerNode.prototype.onRotate = function(e) {
   var rads = this.ui.angle * TO_RADIANS;
@@ -55,5 +62,26 @@ ListenerNode.prototype.fabricate = function(done) {
   canvas.renderAll();
   if(done) {
     window.setTimeout(done, 1);
+  }
+};
+
+var checkBoundary = function(n, max) {
+  var bound
+  if(n < 0 || n > max) {
+    if(n < 0){
+      n = 0;
+      bound = true;
+    };
+    if(n > max) {
+      n = max;
+      bound = true;
+    };
+  } else {
+    bound = false;
+  }
+
+  return {
+    onBoundary: bound,
+    value: n
   }
 };

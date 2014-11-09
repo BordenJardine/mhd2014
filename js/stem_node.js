@@ -8,7 +8,7 @@ var StemNode = function(x, y, path, done) {
   this.pannerNode.setPosition(x, y, 0);
   this.pannerNode.coneOuterAngle = 180;
   this.pannerNode.innerAngle = 30; //these things don't seem to work
-  this.pannerNode.coneOuterGain = 0.1;
+  this.pannerNode.coneOuterGain = 0;
   this.pannerNode.rolloffFactor = 0.05;
   this.pannerNode.connect(audioCtx.destination);
 
