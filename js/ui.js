@@ -26,7 +26,7 @@ var audioChoices = [
     source: ""
   },
   {key: "Here Comes the Sun (Beatles)",
-    filesToPlay: ['audio/BeatlesSun/guitars.mp3', 'audio/BeatlesSun/vocals.mp3', 'audio/BeatlesSun/drums.mp3'],
+    filesToPlay: ['audio/BeatlesSun/guitar.mp3', 'audio/BeatlesSun/vocals.mp3', 'audio/BeatlesSun/drums.mp3'],
     source: "http://multitrackmaster.com/beatles-here-comes-the-sun-multitrack/"
   },
   {key: "Single (1 source)",
@@ -34,7 +34,7 @@ var audioChoices = [
     source: ""
   },
   {key: "Jesu",
-   filesToPlay: ['audio/jesu_joy/1.mp3', 'audio/jesu_joy/2.mp3', 'audio/jesu_joy/3.mp3', 'audio/jesu_joy/4.mp3'],
+   filesToPlay: ['audio/jesu_joy/1.mp3', 'audio/jesu_joy/2.mp3', 'audio/jesu_joy/3.mp3', 'audio/jesu_joy/4.mp3', 'audio/jesu_joy/5.mp3'],
     source: ""
   },
 ]
