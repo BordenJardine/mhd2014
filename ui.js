@@ -2,13 +2,13 @@ var footerHeight = 100;
 var speakerSize = 64;
 var origSize = 64;
 var svgScale = speakerSize / origSize;
+var lookahead = 0.25;
 
 var speakerTemplate;
 var canvas = null;
 var audioCtx = null;
 
-//var filesToPlay = ['ymo.mp3', 'ymo.mp3', 'ymo.mp3', 'ymo.mp3', 'ymo.mp3'];
-var filesToPlay = ['ymo.mp3'];
+var filesToPlay = ['ymo.mp3', 'ymo.mp3', 'ymo.mp3', 'ymo.mp3', 'ymo.mp3'];
 var listeners = [];
 var sources = [];
 
@@ -47,17 +47,38 @@ window.onload = function(){
     window.onresize();
 
     var listener = new ListenerNode(168,268, function(){
-      sources = filesToPlay.map(function(file, i){
-        var stem = new StemNode(100,100, file, function(){
-          canvas.renderAll();
-          stem.playSound();
-        });
-        return stem;
-      })
+      sources = createSourceNodes(function() {
+         playSourceNodes(audioCtx.currentTime + lookahead);
+      });
     });
     listeners.push(listener);
   });
 };
+
+var createSourceNodes = function(done) {
+      var callbackCounter = 1;
+      
+      var checkDone = function() {
+        if(callbackCounter++ == filesToPlay.length) {
+          done();
+        }
+      };
+
+      var sources = filesToPlay.map(function(file, i){
+        var stem = new StemNode(100 + (i * 50),100, file, function() {
+          canvas.renderAll();
+          checkDone();
+        });
+        return stem;
+      });
+    return sources;
+};
+
+var playSourceNodes = function(time) {
+    for(i in sources) {
+      sources[i].playSound(time);
+    }
+}
 
 var lineUp = function(){
   sources.forEach(function(source, i){
