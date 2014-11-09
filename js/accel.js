@@ -15,7 +15,7 @@ var gravity_alpha = 0.8;
 
 var x, y;
 x = 168;
-y = 268;
+y = 168;
 var acceleration_incl_grav = [null, null, null];
 var linear_acceleration = [null, null, null];
 var position = [null, null, null];
@@ -72,11 +72,16 @@ if (window.DeviceOrientationEvent) {
 
     // alpha is the compass direction the device is facing in degrees
     var dir = eventData.alpha
+    var d_t = .05;
+    var dimScale = 3;
+
+    x = 168 + tiltLR * dimScale;
+    y = 168 + tiltFB * dimScale;
 
     // call our orientation event handler
     if(listeners && listeners[0]) {
       listeners[0].setAngle(dir);
-      listeners[0].setPosition(168,168);
+      listeners[0].setPosition(x,y);
     }
   }, false);
 } else if (window.DeviceMotionEvent != undefined) {
