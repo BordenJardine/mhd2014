@@ -64,6 +64,11 @@ var timetime = Date.now();
 if (window.DeviceOrientationEvent) {
   // Listen for the deviceorientation event and handle the raw data
   window.addEventListener('deviceorientation', function(eventData) {
+    if (LISTENER_MODE != "Tilt"){
+        // console.log("not in tilt mode!");
+        return;
+    }
+    
     // gamma is the left-to-right tilt in degrees, where right is positive
     var tiltLR = eventData.gamma;
 
