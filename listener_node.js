@@ -8,6 +8,11 @@ var ListenerNode = function(x, y, done) {
 };
 
 ListenerNode.prototype.setPosition = function(x,y) {
+  if(x < 0){ x = 0 };
+  if(x > maxX){ x = maxX };
+  if(y < 0){ y = 0 };
+  if(y > maxY){ y = maxY };
+
   this.ui.left = x;
   this.ui.top = y;
   this.ui.setCoords();

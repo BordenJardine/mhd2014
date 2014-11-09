@@ -4,6 +4,8 @@ var speakerSize = 64;
 var origSize = 64;
 var svgScale = speakerSize / origSize;
 var lookahead = 0.25;
+var maxX = window.innerWidth;
+var maxY = window.innerHeight - footerHeight;
 
 var speakerTemplate;
 var canvas = null;
@@ -39,9 +41,11 @@ window.onload = function(){
     });
 
     window.onresize = function() {
+      maxX = window.innerWidth;
+      maxY = window.innerHeight - footerHeight;
       canvas.setDimensions({
-        width: window.innerWidth,
-        height: window.innerHeight - footerHeight
+        width: maxX,
+        height: maxY
       });
       canvas.renderAll();
     };
