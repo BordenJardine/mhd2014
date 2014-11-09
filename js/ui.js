@@ -29,10 +29,6 @@ var audioChoices = [
     filesToPlay: ['audio/BeatlesSun/guitars.mp3', 'audio/BeatlesSun/vocals.mp3', 'audio/BeatlesSun/drums.mp3'],
     source: "http://multitrackmaster.com/beatles-here-comes-the-sun-multitrack/"
   },
-
-http://multitrackmaster.com/beatles-here-comes-the-sun-multitrack/
-
-
   {key: "Single (1 source)",
   filesToPlay: ['audio/440.ogg'],
     source: ""
