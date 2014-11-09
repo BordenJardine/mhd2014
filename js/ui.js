@@ -12,12 +12,23 @@ var speakerTemplate;
 var canvas = null;
 var audioCtx = null;
 
-var filesToPlay = ['audio/jesu_joy/1.mp3'];
+var audioChoices = [
+  {key: "Default (5 sources)",
+   filesToPlay: ['audio/jesu_joy/1.mp3', 'audio/jesu_joy/2.mp3', 'audio/jesu_joy/3.mp3', 'audio/jesu_joy/4.mp3', 'audio/440.ogg']
+  },
+  {key: "Super annoying (10 sources)",
+    filesToPlay: ['audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg']
+  },
+  {key: "Single (1 source)",
+  filesToPlay: ['audio/440.ogg']
+  }
+]
 var listeners = [];
 var sources = [];
 
 window.onload = function(){
   canvas = new fabric.Canvas('audio-space');
+
   fabric.loadSVGFromURL("assets/speaker.svg", function(object, options) {
     speakerTemplate = fabric.util.groupSVGElements(object, options);
     canvas.backgroundColor = "#313759";
@@ -59,15 +70,48 @@ var start = function(){
 
   audioCtx = new (window.AudioContext || webkitAudioContext)();
 
-  var listener = new ListenerNode(168,268, function(){
-    sources = createSourceNodes(function() {
-       playSourceNodes(audioCtx.currentTime + lookahead);
-    });
-  });
-  listeners.push(listener);
+  listAvailableAudioChoices();
+  resetAudio();
 };
 
-var createSourceNodes = function(done) {
+
+var resetAudio = function() {
+  var a = document.getElementById("audio_list");
+  var audio_index = a.options[a.selectedIndex].value;
+  var audio = audioChoices[audio_index];
+
+  // delete objects!!
+  for (var i=0; i < sources.length; i++){
+    sources[i].pannerNode.disconnect(0);
+    sources[i].ui.remove();
+  }
+  sources = [];
+
+  for (var i=0; i < listeners.length; i++){
+    listeners[i].ui.remove();
+  }
+  listeners = [];
+
+  var listener = new ListenerNode(168,268, function(){
+      sources = createSourceNodes(audio.filesToPlay, function() {
+         playSourceNodes(audioCtx.currentTime + lookahead);
+      });
+    });
+  listeners.push(listener);
+}
+
+
+var listAvailableAudioChoices = function() {
+  var selectbox = document.getElementById("audio_list");
+  for (var i=0; i < audioChoices.length; i++){
+    var optn = document.createElement("OPTION");
+    optn.text = audioChoices[i].key;
+    optn.value = i;
+    selectbox.options.add(optn);
+  }
+}
+
+var createSourceNodes = function(filesToPlay, done) {
       var callbackCounter = 1;
 
       var checkDone = function() {
