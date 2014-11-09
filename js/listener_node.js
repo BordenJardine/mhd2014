@@ -36,7 +36,7 @@ ListenerNode.prototype.onRotate = function(e) {
   var rads = this.ui.angle * TO_RADIANS;
   var xDir = Math.cos(rads);
   var yDir = Math.sin(rads);
-  console.log('listener', xDir, yDir);
+
   this.audioListener.setOrientation(xDir, yDir, 0, 0, 0, 1);
 };
 
