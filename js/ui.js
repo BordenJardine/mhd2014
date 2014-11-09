@@ -12,7 +12,7 @@ var speakerTemplate;
 var canvas = null;
 var audioCtx = null;
 
-var filesToPlay = ['audio/jesu_joy/1.mp3', 'audio/jesu_joy/2.mp3', 'audio/jesu_joy/3.mp3', 'audio/jesu_joy/4.mp3', 'audio/440.ogg'];
+var filesToPlay = ['audio/jesu_joy/1.mp3', 'audio/jesu_joy/2.mp3', 'audio/jesu_joy/3.mp3', 'audio/jesu_joy/4.mp3'];
 var listeners = [];
 var sources = [];
 
