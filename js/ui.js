@@ -96,6 +96,7 @@ var resetAudio = function() {
       sources = createSourceNodes(audio.filesToPlay, function() {
          playSourceNodes(audioCtx.currentTime + lookahead);
       });
+      window.setTimeout(circleUp, 100);
     });
   listeners.push(listener);
 }
