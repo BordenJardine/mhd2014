@@ -1,4 +1,4 @@
-var LISTENER_MODE = "Tilt"; // "Drag"
+var LISTENER_MODE = "Walk"; // "Drag"
 
 function setListenerMode(){
     console.log('Old mode: ' + LISTENER_MODE);

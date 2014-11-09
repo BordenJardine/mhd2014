@@ -69,6 +69,7 @@ var start = function(){
   overlay.parentNode.removeChild(overlay);
 
   audioCtx = new (window.AudioContext || webkitAudioContext)();
+  initPodo();
 
   listAvailableAudioChoices();
   resetAudio();
