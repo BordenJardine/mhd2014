@@ -17,12 +17,13 @@ ListenerNode.prototype.setPosition = function(x,y) {
   this.onYBoundary = yRes.onBoundary;
 
   x = xRes.value;
-  y = xRes.value;
+  y = yRes.value;
 
   this.ui.left = x;
   this.ui.top = y;
   this.ui.setCoords();
   this.onMove();
+  canvas.renderAll();
 };
 
 

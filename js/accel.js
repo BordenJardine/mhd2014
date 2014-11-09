@@ -87,15 +87,14 @@ if (window.DeviceMotionEvent != undefined) {
         linear_position[1] = update_kalman(linear_KM_y, linear_KO_y, linear_acceleration[1]);
         linear_position[2] = update_kalman(linear_KM_z, linear_KO_z, linear_acceleration[2]);
 
-        var dimScale = 1;
-        if(!listeners[0].onXBoundary) {
-          x -= dimScale * linear_position[0];
-        }
-        if(!listeners[0].onYBoundary) {
-          y += dimScale * linear_position[1];
-        }
+        var dimScale = 10;
+        console.log(linear_position[0], linear_position[1]);
+
+        x = 168 + dimScale * linear_position[0];
+        y = 168 - dimScale * linear_position[1];
+
         if(listeners && listeners[0]) {
-          listeners[0].setPosition(x, y); //168 + dimScale * linear_position[0], 268 - dimScale * linear_position[1]);
+          listeners[0].setPosition(x, y); //, 268 - dimScale * linear_position[1]);
         }
         //TODO!
         if ( e.rotationRate ) {
