@@ -86,7 +86,6 @@ var semiCircle = function() {
       var radius = 150;
       var x = 200 - radius * Math.cos(radians);
       var y = 288 - radius * Math.sin(radians);
-      console.log(x, y, radians, degrees);
       source.setPosition(x, y);
     } else {
       source.setAngle(90);
@@ -104,7 +103,6 @@ var circleUp = function() {
       var radius = 150;
       var x = 200 - radius * Math.cos(radians);
       var y = 288 - radius * Math.sin(radians);
-      console.log(x, y, radians, degrees);
       source.setPosition(x, y);
     } else {
       source.setAngle(90);

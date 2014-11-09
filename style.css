@@ -47,9 +47,21 @@ table {
 	border-spacing: 0;
 }
 
+button {
+  border: none;
+  outline: none;
+  font-family: futura, comic sans;
+  font-size: 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #BCBF50;
+  color: #313759;
+}
+
 #footer {
   position: absolute;
   bottom: 0px;
+  padding: 5px;
 
   height: 100px;
   width: 100%;

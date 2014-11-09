@@ -17,8 +17,8 @@ ListenerNode.prototype.fabricate = function(done) {
   this.ui = new fabric.Triangle({
     left: this.x,
     top: this.y,
-    height: speakerSize,
-    width: speakerSize,
+    height: speakerSize * 0.75,
+    width: speakerSize * 0.75,
     fill: "#BCBF50",
     stroke: "#2BADB1",
     strokeWidth: 3,
