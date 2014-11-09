@@ -91,7 +91,7 @@ if (window.DeviceOrientationEvent) {
     var tiltFB = eventData.beta;
 
     // alpha is the compass direction the device is facing in degrees
-    var dir = eventData.alpha
+    var dir = -eventData.alpha
     var d_t = .05;
     var dimScale = 3;
 

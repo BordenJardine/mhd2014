@@ -64,7 +64,7 @@ function initPodo() {
           return;
       }
 
-      var dir = eventData.alpha
+      var dir = -eventData.alpha;
 
       // call our orientation event handler
       if(listeners && listeners[0]) {
