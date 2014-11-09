@@ -13,15 +13,26 @@ var canvas = null;
 var audioCtx = null;
 
 var audioChoices = [
-  {key: "Default (5 sources)",
-   filesToPlay: ['audio/jesu_joy/1.mp3', 'audio/jesu_joy/2.mp3', 'audio/jesu_joy/3.mp3', 'audio/jesu_joy/4.mp3', 'audio/440.ogg']
+  {key: "Dreamy Bruises (Sylvan Esso)",
+    filesToPlay: ['audio/DreamyBruises/Vocals.mp3', 'audio/DreamyBruises/Guitars.mp3', 'audio/DreamyBruises/Bass.mp3', 'audio/DreamyBruises/Drums.mp3'],
+    source: "https://soundcloud.com/sylvanesso/sets/dreamy-bruises-stems"
   },
-  {key: "Super annoying (10 sources)",
-    filesToPlay: ['audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg']
+  {key: "Corine Corine (Abletones Big Band)",
+    filesToPlay: ['audio/CorineCorine/01.mp3', 'audio/CorineCorine/02.mp3', 'audio/CorineCorine/03.mp3','audio/CorineCorine/04.mp3','audio/CorineCorine/05.mp3','audio/CorineCorine/06.mp3','audio/CorineCorine/07.mp3','audio/CorineCorine/08.mp3','audio/CorineCorine/09.mp3','audio/CorineCorine/10.mp3','audio/CorineCorine/11.mp3','audio/CorineCorine/12.mp3','audio/CorineCorine/13.mp3','audio/CorineCorine/14.mp3','audio/CorineCorine/15.mp3','audio/CorineCorine/16.mp3','audio/CorineCorine/17.mp3','audio/CorineCorine/18.mp3','audio/CorineCorine/19.mp3'],
+    source: ""
+  },
+  {key: "Left Blind (Hollow Ground)",
+    filesToPlay: ['audio/LeftBlind/01.mp3', 'audio/LeftBlind/02.mp3', 'audio/LeftBlind/03.mp3','audio/LeftBlind/04.mp3','audio/LeftBlind/05.mp3','audio/LeftBlind/06.mp3','audio/LeftBlind/07.mp3','audio/LeftBlind/08.mp3','audio/LeftBlind/09.mp3','audio/LeftBlind/10.mp3','audio/LeftBlind/11.mp3','audio/LeftBlind/12.mp3','audio/LeftBlind/13.mp3','audio/LeftBlind/14.mp3','audio/LeftBlind/15.mp3','audio/LeftBlind/16.mp3'],
+    source: ""
   },
   {key: "Single (1 source)",
-  filesToPlay: ['audio/440.ogg']
-  }
+  filesToPlay: ['audio/440.ogg'],
+    source: ""
+  },
+  {key: "Jesu",
+   filesToPlay: ['audio/jesu_joy/1.mp3', 'audio/jesu_joy/2.mp3', 'audio/jesu_joy/3.mp3', 'audio/jesu_joy/4.mp3'],
+    source: ""
+  },
 ]
 var listeners = [];
 var sources = [];
