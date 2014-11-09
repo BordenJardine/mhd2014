@@ -31,8 +31,11 @@ body {
     <!-- <li>velocity: <span id="velocity"></span></li> -->
     <li>position: <span id="position"></span></li>
     <li>linear position: <span id="linear_position"></span></li>
-
+    <li></li>
     <li>rotations: <span id="rotations"></span></li>
+    <li>calibrate: <span id="calibrate"></span></li>
+    <li>steps: <span id="steps"></span></li>
+    <li>heading: <span id="heading"></span></li>
 </ul>
 
 test: <span id="test"></span>
@@ -57,6 +60,7 @@ var position = [null, null, null];
 var linear_position = [null, null, null];
 var rotations = [null, null, null];
 var gravity = [0,0,0];
+var is_in_step = false;
 
 function removeGravityFromAccel(){
     for (var i=0; i<3; i++) {
@@ -67,11 +71,52 @@ function removeGravityFromAccel(){
 
 
 function round_and_stringify(num_array, rounding_mult){
-    for (var i=0; i<num_array.length; i++){
-        num_array[i] = Math.round(rounding_mult*num_array[i])/rounding_mult;
+    if (rounding_mult){
+        for (var i=0; i<num_array.length; i++){
+            num_array[i] = Math.round(rounding_mult*num_array[i])/rounding_mult;
+        }
     }
     array_string = num_array.join(', ');
     return array_string;
+}
+
+function compassHeading() {
+
+  return rotations[0];
+
+  // Convert degrees to radians
+  var alphaRad = rotations[0] * (Math.PI / 180);
+  var betaRad = rotations[1] * (Math.PI / 180);
+  var gammaRad = rotations[2] * (Math.PI / 180);
+
+  // Calculate equation components
+  var cA = Math.cos(alphaRad);
+  var sA = Math.sin(alphaRad);
+  var cB = Math.cos(betaRad);
+  var sB = Math.sin(betaRad);
+  var cG = Math.cos(gammaRad);
+  var sG = Math.sin(gammaRad);
+
+  // Calculate A, B, C rotation components
+  var rA = - cA * sG - sA * sB * cG;
+  var rB = - sA * sG + cA * sB * cG;
+  var rC = - cB * cG;
+
+  // Calculate compass heading
+  var compassHeading = Math.atan(rA / rB);
+
+  // Convert from half unit circle to whole unit circle
+  if(rB < 0) {
+    compassHeading += Math.PI;
+  }else if(rA < 0) {
+    compassHeading += 2 * Math.PI;
+  }
+
+  // Convert radians to degrees
+  compassHeading *= 180 / Math.PI;
+
+  return compassHeading;
+
 }
 
 var Kalman_x = set_up_kalman();
@@ -98,6 +143,11 @@ var linear_KO_z = linear_Kalman_z[1];
 var timetime = Date.now();
 
 if (window.DeviceMotionEvent != undefined) {
+
+    window.addEventListener("compassneedscalibration", function(event) {
+          document.getElementById("calibrate").innerHTML = true;
+      }, true);
+
     window.ondevicemotion = function(e) {
 
         // console.log("Time delta: " + (Date.now() - timetime));
@@ -132,7 +182,31 @@ if (window.DeviceMotionEvent != undefined) {
             rotations[0] = e.rotationRate.alpha;
             rotations[1] = e.rotationRate.beta;
             rotations[2] = e.rotationRate.gamma;
-            document.getElementById("rotations").innerHTML = round_and_stringify(rotations, r_mult);
+            document.getElementById("rotations").innerHTML = round_and_stringify(rotations, 1);
+
+            var thresh = 30;
+            var myTotal = 0;
+            for(var i=1; i<3; i++){ //just add beta and gamma!
+                myTotal += Math.abs(rotations[i]);
+            }
+            var step = false;
+            if (myTotal > thresh) {
+                if (is_in_step == 0){
+                    is_in_step = 1;
+                    step = true;
+                    console.log("step!");
+                    document.getElementById("test").innerHTML += (step + "(" + Math.round(compassHeading(rotations)) + "); ");
+                } else {
+                    is_in_step+=1;
+                }
+            }
+            else {
+                is_in_step = 0;
+                console.log("no step");
+            }
+            document.getElementById("steps").innerHTML = step;
+            document.getElementById("heading").innerHTML = Math.round(compassHeading(rotations));
+            // document.getElementById("test").innerHTML += (step + "(" + rotations[0] + "); ");
         }
     }
 
