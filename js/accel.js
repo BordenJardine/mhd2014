@@ -61,6 +61,21 @@ var linear_KO_z = linear_Kalman_z[1];
 
 var timetime = Date.now();
 
+var resetAcceleration = function(){
+  Kalman_x = set_up_kalman();
+  KM_x = Kalman_x[0];
+  KO_x = Kalman_x[1];
+  Kalman_y = set_up_kalman();
+  KM_y = Kalman_y[0];
+  KO_y = Kalman_y[1];
+  Kalman_z = set_up_kalman();
+  KM_z = Kalman_z[0];
+  sKO_z = Kalman_z[1];
+  x = window.innerWidth / 2;
+  y = window.innerHeight / 2;
+  listeners[0].setPosition(x, y);
+}
+
 if (window.DeviceOrientationEvent) {
   // Listen for the deviceorientation event and handle the raw data
   window.addEventListener('deviceorientation', function(eventData) {
@@ -68,7 +83,7 @@ if (window.DeviceOrientationEvent) {
         // console.log("not in tilt mode!");
         return;
     }
-    
+
     // gamma is the left-to-right tilt in degrees, where right is positive
     var tiltLR = eventData.gamma;
 
@@ -80,8 +95,8 @@ if (window.DeviceOrientationEvent) {
     var d_t = .05;
     var dimScale = 3;
 
-    x = 168 + tiltLR * dimScale;
-    y = 168 + tiltFB * dimScale;
+    x = window.innerWidth / 2 + tiltLR * dimScale;
+    y = window.innerHeight / 2 + tiltFB * dimScale;
 
     // call our orientation event handler
     if(listeners && listeners[0]) {
@@ -116,10 +131,9 @@ if (window.DeviceOrientationEvent) {
         linear_position[2] = update_kalman(linear_KM_z, linear_KO_z, linear_acceleration[2]);
 
         var dimScale = 10;
-        console.log(linear_position[0], linear_position[1]);
 
-        x = 168 + dimScale * linear_position[0];
-        y = 168 - dimScale * linear_position[1];
+        x = window.innerWidth / 2 + dimScale * linear_position[0];
+        y = window.innerHeight / 2 - dimScale * linear_position[1];
 
         if(listeners && listeners[0]) {
           listeners[0].setPosition(x, y); //, 268 - dimScale * linear_position[1]);

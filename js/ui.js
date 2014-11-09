@@ -137,54 +137,68 @@ var playSourceNodes = function(time) {
 }
 
 var lineUp = function(){
+  var start = window.innerWidth * 0.125;
+  var len = window.innerWidth * 0.75;
   sources.forEach(function(source, i){
     source.setAngle(90);
     if(sources.length !== 1) {
-      source.setPosition(50 + i * 300 / (sources.length - 1), 160);
+      source.setPosition(start + i * len / (sources.length - 1), window.innerHeight * 0.25);
     } else {
-      source.setPosition(233, 120);
+      source.setPosition(window.innerWidth / 2, window.innerHeight * 0.25);
     }
   });
+  resetAcceleration();
 }
 
 var stack = function() {
+  centerX = window.innerWidth / 2;
+  centerY = window.innerHeight / 4;
+
   sources.forEach(function(source, i){
     source.setAngle(90);
     var offset = 10;
-    source.setPosition(200 - (sources.length - 1 * 5) + i * 10, i * 10 + 80);
+    source.setPosition(centerX - (sources.length - 1 * 5) + i * 10, i * 10 + centerY);
   });
+  resetAcceleration();
 }
 
 var semiCircle = function() {
+  var centerX = window.innerWidth / 2;
+  var centerY = window.innerHeight / 2 - footerHeight / 2;
+  var radius = Math.min(window.innerWidth, window.innerHeight - footerHeight) / 3;
   sources.forEach(function(source, i){
     if(sources.length !== 1) {
       var degrees = i * 180 / (sources.length - 1);
       source.setAngle(degrees);
       var radians = degrees / 180 * Math.PI;
-      var radius = 150;
-      var x = 200 - radius * Math.cos(radians);
-      var y = 288 - radius * Math.sin(radians);
+      var x = centerX - radius * Math.cos(radians);
+      var y = centerY - radius * Math.sin(radians);
       source.setPosition(x, y);
     } else {
       source.setAngle(90);
-      source.setPosition(233, 80);
+      source.setPosition(centerX, centerY - radius);
     }
   });
+  resetAcceleration();
 }
 
 var circleUp = function() {
+  var centerX = window.innerWidth / 2;
+  var centerY = window.innerHeight / 2 - footerHeight / 2;
+  var radius = Math.min(window.innerWidth, window.innerHeight - footerHeight) / 3;
+
   sources.forEach(function(source, i){
     if(sources.length !== 1) {
       var degrees = i * 360 / (sources.length);
       source.setAngle(degrees);
       var radians = degrees / 180 * Math.PI;
-      var radius = 150;
-      var x = 200 - radius * Math.cos(radians);
-      var y = 288 - radius * Math.sin(radians);
+      var x = centerX - radius * Math.cos(radians);
+      var y = centerY - radius * Math.sin(radians);
       source.setPosition(x, y);
     } else {
       source.setAngle(90);
-      source.setPosition(233, 80);
+      source.setPosition(centerX, centerY - radius);
     }
   });
+  resetAcceleration();
 }
