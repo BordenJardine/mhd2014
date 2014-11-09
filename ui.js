@@ -7,6 +7,7 @@ var speakerTemplate;
 var canvas = null;
 var audioCtx = null;
 
+var filesToPlay = ['ymo.mp3', 'ymo.mp3', 'ymo.mp3'];
 var listeners = [];
 var sources = [];
 
@@ -44,14 +45,37 @@ window.onload = function(){
     };
     window.onresize();
 
-    var listener = new ListenerNode(200,200);
-    listeners.push(listener);
-
-    var stem = new StemNode(100, 100, 'ymo.mp3', function() {
-      canvas.renderAll();
-      stem.playSound();
+    var listener = new ListenerNode(168,268, function(){
+      sources = filesToPlay.map(function(file, i){
+        var stem = new StemNode(100,100, file, function(){
+          canvas.renderAll();
+          stem.playSound();
+        });
+        return stem;
+      })
     });
-    sources.push(stem);
-
+    listeners.push(listener);
   });
 };
+
+var lineUp = function(){
+  sources.forEach(function(source, i){
+    source.angle = 90;
+    if(sources.length !== 1) {
+      source.setPosition(100 + i * 266 / (sources.length - 1), 80);
+    } else {
+      source.setPosition(233, 80);
+    }
+  });
+}
+
+var stack = function() {
+  sources.forEach(function(source){
+    source.angle = 90;
+    source.setPosition(233, 80);
+  });
+}
+
+var semiCircle = function() {
+
+}

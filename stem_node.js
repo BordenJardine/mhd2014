@@ -25,6 +25,14 @@ StemNode.prototype.bufferSound = function(url, done) {
   request.send();
 };
 
+StemNode.prototype.setPosition = function(x, y) {
+  this.ui.left = x;
+  this.ui.top = y;
+  this.ui.setCoords()
+  this.onMove();
+  canvas.renderAll();
+}
+
 StemNode.prototype.onMove = function(e) {
   this.x = this.ui.getLeft();
   this.y = this.ui.getTop();
