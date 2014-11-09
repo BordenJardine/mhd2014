@@ -11,14 +11,14 @@ var speakerTemplate;
 var canvas = null;
 var audioCtx = null;
 
-var filesToPlay = ['jesu_joy/1.mp3', 'jesu_joy/2.mp3', 'jesu_joy/3.mp3', 'jesu_joy/4.mp3', '440.ogg'];
+var filesToPlay = ['audio/jesu_joy/1.mp3', 'audio/jesu_joy/2.mp3', 'audio/jesu_joy/3.mp3', 'audio/jesu_joy/4.mp3', 'audio/440.ogg'];
 var listeners = [];
 var sources = [];
 
 window.onload = function(){
   audioCtx = new (window.AudioContext || webkitAudioContext)();
   canvas = new fabric.Canvas('audio-space');
-  fabric.loadSVGFromURL("/speaker.svg", function(object, options) {
+  fabric.loadSVGFromURL("assets/speaker.svg", function(object, options) {
     speakerTemplate = fabric.util.groupSVGElements(object, options);
     canvas.backgroundColor = "#313759";
     speakerTemplate.set({
@@ -70,7 +70,7 @@ var createSourceNodes = function(done) {
       };
 
       var sources = filesToPlay.map(function(file, i){
-        var stem = new StemNode(100 + (i * 50),100, file, function() {
+        var stem = new StemNode(100 + (i * 50),100, '../' + file, function() {
           canvas.renderAll();
           checkDone();
         });

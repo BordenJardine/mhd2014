@@ -1,3 +1,5 @@
+var LISTENER_MODE = "Tilt"; // "Drag"
+
 var r_mult = 10;                    //TODO! keep in mind :)
 var gravity_alpha = 0.8;
 
@@ -52,6 +54,11 @@ var timetime = Date.now();
 if (window.DeviceMotionEvent != undefined) {
     window.ondevicemotion = function(e) {
 
+        if (LISTENER_MODE != "Tilt"){
+            console.log("not in tilt mode!");
+            return;
+        }
+
         timetime = Date.now();
 
         //Get acceleration!
@@ -88,7 +95,7 @@ if (window.DeviceMotionEvent != undefined) {
 function set_up_kalman(){
     var d_t = .05;
     var sigma_a = 1; //?? MAYBE????? standard deviation of accel
-    var sigma_z = 10; //?? MAYBE????? standard deviation of measurement error
+    var sigma_z = 1; //?? MAYBE????? standard deviation of measurement error
     var L = 10000;
 
     var x_0 = $V([0,0,0]); //$V([-10]);
@@ -106,7 +113,7 @@ function set_up_kalman(){
         [d_t*d_t/2],
         [d_t],
         [1]
-        ])
+        ]);
     var Q_k = (G_k.x(G_k.transpose())).x(sigma_a*sigma_a); //$M([[0]]);
     var KM = new KalmanModel(x_0,P_0,F_k,Q_k);
     var z_k = $V([1]); //$V([1]); //measure from accel
@@ -114,7 +121,7 @@ function set_up_kalman(){
     var R_k = $M([[sigma_z*sigma_z]]); //$M([[4]]);
     var KO = new KalmanObservation(z_k,H_k,R_k);
 
-    return [KM, KO]
+    return [KM, KO];
 }
 
 function update_kalman(KM, KO, z_k){

@@ -79,17 +79,17 @@ button {
 }
 
 button.line {
-  background-image: url('line.png');
+  background-image: url('assets/line.png');
 }
 
 button.circle {
-  background-image: url('surround.png');
+  background-image: url('assets/surround.png');
 }
 
 button.semicircle {
-  background-image: url('semicircle.png');
+  background-image: url('assets/semicircle.png');
 }
 
 button.stack {
-  background-image: url('point.png');
+  background-image: url('assets/point.png');
 }
