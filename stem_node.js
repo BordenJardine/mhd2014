@@ -2,12 +2,21 @@ var StemNode = function(x, y, path, done) {
   this.x = x;
   this.y = y;
   this.buffer;
-  this.pannerNode;
+  this.pannerNode = audioCtx.createPanner();
+  this.pannerNode.setPosition(x, y, 0);
+  this.pannerNode.coneOuterAngle = 0; //these things don't seem to work
+  this.pannerNode.coneOuterGain = 100;
+  this.pannerNode.connect(audioCtx.destination);
 
   this.fabricate(function(){
     this.bufferSound(path, done);
   }.bind(this));
 };
+
+var initPanner = function() {
+
+  return panner;
+}
 
 StemNode.prototype.bufferSound = function(url, done) {
   var self = this;
@@ -28,6 +37,7 @@ StemNode.prototype.bufferSound = function(url, done) {
 StemNode.prototype.onMove = function(e) {
   this.x = this.ui.getLeft();
   this.y = this.ui.getTop();
+  this.pannerNode.setPosition(this.x, this.y, 0);
 };
 
 StemNode.prototype.fabricate = function(done) {
@@ -52,6 +62,6 @@ StemNode.prototype.playSound = function(time) {
   var source = audioCtx.createBufferSource();
   source.buffer = this.buffer;
   source.loop = true;
-  source.connect(audioCtx.destination);
-//  source.start(time);
+  source.connect(this.pannerNode);
+  source.start(time);
 };
