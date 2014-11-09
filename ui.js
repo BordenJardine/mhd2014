@@ -84,9 +84,9 @@ var lineUp = function(){
   sources.forEach(function(source, i){
     source.setAngle(90);
     if(sources.length !== 1) {
-      source.setPosition(50 + i * 300 / (sources.length - 1), 80);
+      source.setPosition(50 + i * 300 / (sources.length - 1), 160);
     } else {
-      source.setPosition(233, 80);
+      source.setPosition(233, 120);
     }
   });
 }
