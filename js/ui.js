@@ -25,6 +25,14 @@ var audioChoices = [
     filesToPlay: ['audio/LeftBlind/01.mp3', 'audio/LeftBlind/02.mp3', 'audio/LeftBlind/03.mp3','audio/LeftBlind/04.mp3','audio/LeftBlind/05.mp3','audio/LeftBlind/06.mp3','audio/LeftBlind/07.mp3','audio/LeftBlind/08.mp3','audio/LeftBlind/09.mp3','audio/LeftBlind/10.mp3','audio/LeftBlind/11.mp3','audio/LeftBlind/12.mp3','audio/LeftBlind/13.mp3','audio/LeftBlind/14.mp3','audio/LeftBlind/15.mp3','audio/LeftBlind/16.mp3'],
     source: ""
   },
+  {key: "Here Comes the Sun (Beatles)",
+    filesToPlay: ['audio/BeatlesSun/guitars.mp3', 'audio/BeatlesSun/vocals.mp3', 'audio/BeatlesSun/drums.mp3'],
+    source: "http://multitrackmaster.com/beatles-here-comes-the-sun-multitrack/"
+  },
+
+http://multitrackmaster.com/beatles-here-comes-the-sun-multitrack/
+
+
   {key: "Single (1 source)",
   filesToPlay: ['audio/440.ogg'],
     source: ""
