@@ -3,11 +3,12 @@ var StemNode = function(x, y, path, done) {
   this.y = y;
   this.buffer;
   this.pannerNode = audioCtx.createPanner();
+  this.pannerNode.panningModel = 'HRTF';
   this.pannerNode.distanceModel = 'inverse';
   this.pannerNode.setPosition(x, y, 0);
-  this.pannerNode.innerAngle = 180; //these things don't seem to work
   this.pannerNode.coneOuterAngle = 180;
-  this.pannerNode.coneOuterGain = 1;
+  this.pannerNode.innerAngle = 30; //these things don't seem to work
+  this.pannerNode.coneOuterGain = 0.1;
   this.pannerNode.rolloffFactor = 0.05;
   this.pannerNode.connect(audioCtx.destination);
 
@@ -47,6 +48,7 @@ StemNode.prototype.setPosition = function(x, y) {
 
 StemNode.prototype.setAngle = function(degrees) {
   this.ui.setAngle(degrees);
+  this.onRotate();
   canvas.renderAll();
 }
 
