@@ -16,8 +16,7 @@ var filesToPlay = ['audio/jesu_joy/1.mp3', 'audio/jesu_joy/2.mp3', 'audio/jesu_j
 var listeners = [];
 var sources = [];
 
-var start = function(){
-  audioCtx = new (window.AudioContext || webkitAudioContext)();
+window.onload = function(){
   canvas = new fabric.Canvas('audio-space');
   fabric.loadSVGFromURL("assets/speaker.svg", function(object, options) {
     speakerTemplate = fabric.util.groupSVGElements(object, options);
@@ -51,17 +50,21 @@ var start = function(){
       canvas.renderAll();
     };
     window.onresize();
-
-    var listener = new ListenerNode(168,268, function(){
-      sources = createSourceNodes(function() {
-         playSourceNodes(audioCtx.currentTime + lookahead);
-      });
-    });
-    listeners.push(listener);
   });
+}
 
+var start = function(){
   var overlay = document.getElementById('touchtostart');
   overlay.parentNode.removeChild(overlay);
+
+  audioCtx = new (window.AudioContext || webkitAudioContext)();
+
+  var listener = new ListenerNode(168,268, function(){
+    sources = createSourceNodes(function() {
+       playSourceNodes(audioCtx.currentTime + lookahead);
+    });
+  });
+  listeners.push(listener);
 };
 
 var createSourceNodes = function(done) {
