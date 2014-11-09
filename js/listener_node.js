@@ -23,7 +23,6 @@ ListenerNode.prototype.setPosition = function(x,y) {
   this.ui.top = y;
   this.ui.setCoords();
   this.onMove();
-  this.audioListener.setPosition(this.x, this.y, 0);
 };
 
 
