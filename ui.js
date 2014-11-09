@@ -1,14 +1,17 @@
+var TO_RADIANS = Math.PI / 180;
 var footerHeight = 100;
 var speakerSize = 64;
 var origSize = 64;
 var svgScale = speakerSize / origSize;
 var lookahead = 0.25;
+var maxX = window.innerWidth;
+var maxY = window.innerHeight - footerHeight;
 
 var speakerTemplate;
 var canvas = null;
 var audioCtx = null;
 
-var filesToPlay = ['jesu_joy/1.mp3', 'jesu_joy/2.mp3', 'jesu_joy/3.mp3', 'jesu_joy/4.mp3', 'jesu_joy/5.mp3'];
+var filesToPlay = ['jesu_joy/1.mp3', 'jesu_joy/2.mp3', 'jesu_joy/3.mp3', 'jesu_joy/4.mp3', '440.ogg'];
 var listeners = [];
 var sources = [];
 
@@ -38,9 +41,11 @@ window.onload = function(){
     });
 
     window.onresize = function() {
+      maxX = window.innerWidth;
+      maxY = window.innerHeight - footerHeight;
       canvas.setDimensions({
-        width: window.innerWidth,
-        height: window.innerHeight - footerHeight
+        width: maxX,
+        height: maxY
       });
       canvas.renderAll();
     };
@@ -57,7 +62,7 @@ window.onload = function(){
 
 var createSourceNodes = function(done) {
       var callbackCounter = 1;
-      
+
       var checkDone = function() {
         if(callbackCounter++ == filesToPlay.length) {
           done();
@@ -84,9 +89,9 @@ var lineUp = function(){
   sources.forEach(function(source, i){
     source.setAngle(90);
     if(sources.length !== 1) {
-      source.setPosition(50 + i * 300 / (sources.length - 1), 80);
+      source.setPosition(50 + i * 300 / (sources.length - 1), 160);
     } else {
-      source.setPosition(233, 80);
+      source.setPosition(233, 120);
     }
   });
 }
