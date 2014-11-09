@@ -19,6 +19,8 @@ ListenerNode.prototype.fabricate = function(done) {
     height: speakerSize,
     width: speakerSize,
     fill: "#BCBF50",
+    stroke: "#2BADB1",
+    strokeWidth: 3,
     lockScalingX: true,
     lockScalingY: true,
     lockMovementX: true,

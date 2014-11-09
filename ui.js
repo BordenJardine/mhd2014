@@ -29,10 +29,10 @@ window.onload = function(){
     });
 
     speakerTemplate.paths.forEach(function(path){
-      var fill = "#BCBF50";
-      path.stroke = fill;
+      path.stroke = "#2BADB1";
+      path.strokeWidth = 3;
       if(path.fill) {
-        path.fill = fill;
+        path.fill = "#BCBF50";
       }
     });
 
@@ -70,9 +70,10 @@ var lineUp = function(){
 }
 
 var stack = function() {
-  sources.forEach(function(source){
+  sources.forEach(function(source, i){
     source.setAngle(90);
-    source.setPosition(200, 80);
+    var offset = 10;
+    source.setPosition(200 - (sources.length - 1 * 5) + i * 10, i * 10 + 80);
   });
 }
 
@@ -80,6 +81,24 @@ var semiCircle = function() {
   sources.forEach(function(source, i){
     if(sources.length !== 1) {
       var degrees = i * 180 / (sources.length - 1);
+      source.setAngle(degrees);
+      var radians = degrees / 180 * Math.PI;
+      var radius = 150;
+      var x = 200 - radius * Math.cos(radians);
+      var y = 288 - radius * Math.sin(radians);
+      console.log(x, y, radians, degrees);
+      source.setPosition(x, y);
+    } else {
+      source.setAngle(90);
+      source.setPosition(233, 80);
+    }
+  });
+}
+
+var circleUp = function() {
+  sources.forEach(function(source, i){
+    if(sources.length !== 1) {
+      var degrees = i * 360 / (sources.length);
       source.setAngle(degrees);
       var radians = degrees / 180 * Math.PI;
       var radius = 150;
