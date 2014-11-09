@@ -8,8 +8,24 @@ var ListenerNode = function(x, y, done) {
 };
 
 ListenerNode.prototype.setPosition = function(x,y) {
-  this.x = x;
-  this.y = y;
+  this.ui.left = x;
+  this.ui.top = y;
+  this.ui.setCoords()
+  this.onMove();
+  this.audioListener.setPosition(this.x, this.y, 0);
+};
+
+ListenerNode.prototype.onRotate = function(e) {
+  var rads = this.ui.angle * TO_RADIANS;
+  var xDir = Math.cos(rads);
+  var yDir = Math.sin(rads);
+  console.log('listener', xDir, yDir);
+  this.audioListener.setOrientation(xDir, yDir, -1, 0, 1, 0);
+};
+
+ListenerNode.prototype.onMove = function(e) {
+  this.x = this.ui.getLeft();
+  this.y = this.ui.getTop();
   this.audioListener.setPosition(this.x, this.y, 0);
 };
 
@@ -24,10 +40,12 @@ ListenerNode.prototype.fabricate = function(done) {
     strokeWidth: 3,
     lockScalingX: true,
     lockScalingY: true,
-    lockMovementX: true,
-    lockMovementY: true,
-    selectable: false
+    //lockMovementX: true,
+    //lockMovementY: true,
+    //selectable: false
   });
+  this.ui.on('moving', this.onMove.bind(this));
+  this.ui.on('rotating', this.onRotate.bind(this));
   canvas.add(this.ui);
   canvas.renderAll();
   if(done) {

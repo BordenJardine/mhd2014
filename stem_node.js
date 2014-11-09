@@ -5,9 +5,9 @@ var StemNode = function(x, y, path, done) {
   this.pannerNode = audioCtx.createPanner();
   this.pannerNode.distanceModel = 'inverse';
   this.pannerNode.setPosition(x, y, 0);
-  this.pannerNode.coneOuterAngle = 0;
-  this.pannerNode.innerAngle = 360; //these things don't seem to work
-  this.pannerNode.coneOuterGain = 0;
+  this.pannerNode.innerAngle = 180; //these things don't seem to work
+  this.pannerNode.coneOuterAngle = 180;
+  this.pannerNode.coneOuterGain = 1;
   this.pannerNode.rolloffFactor = 0.05;
   this.pannerNode.connect(audioCtx.destination);
 
@@ -50,6 +50,14 @@ StemNode.prototype.setAngle = function(degrees) {
   canvas.renderAll();
 }
 
+StemNode.prototype.onRotate = function(e) {
+  var rads = this.ui.angle * TO_RADIANS;
+  var xDir = Math.cos(rads);
+  var yDir = Math.sin(rads);
+  console.log('source', xDir, yDir);
+  this.pannerNode.setOrientation(xDir, yDir, 0);
+};
+
 StemNode.prototype.onMove = function(e) {
   this.x = this.ui.getLeft();
   this.y = this.ui.getTop();
@@ -69,6 +77,7 @@ StemNode.prototype.fabricate = function(done) {
       angle: 90
     });
     this.ui.on('moving', this.onMove.bind(this));
+    this.ui.on('rotating', this.onRotate.bind(this));
     canvas.add(this.ui);
     canvas.renderAll();
     done();

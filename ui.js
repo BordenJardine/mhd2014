@@ -1,3 +1,4 @@
+var TO_RADIANS = Math.PI / 180;
 var footerHeight = 100;
 var speakerSize = 64;
 var origSize = 64;
@@ -8,7 +9,7 @@ var speakerTemplate;
 var canvas = null;
 var audioCtx = null;
 
-var filesToPlay = ['jesu_joy/1.mp3', 'jesu_joy/2.mp3', 'jesu_joy/3.mp3', 'jesu_joy/4.mp3', 'jesu_joy/5.mp3'];
+var filesToPlay = ['jesu_joy/1.mp3', 'jesu_joy/2.mp3', 'jesu_joy/3.mp3', 'jesu_joy/4.mp3', '440.ogg'];
 var listeners = [];
 var sources = [];
 
