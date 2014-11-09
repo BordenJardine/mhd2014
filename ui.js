@@ -8,7 +8,7 @@ var speakerTemplate;
 var canvas = null;
 var audioCtx = null;
 
-var filesToPlay = ['ymo.mp3', 'ymo.mp3', 'ymo.mp3', 'ymo.mp3', 'ymo.mp3'];
+var filesToPlay = ['jesu_joy/1.mp3', 'jesu_joy/2.mp3', 'jesu_joy/3.mp3', 'jesu_joy/4.mp3', 'jesu_joy/5.mp3'];
 var listeners = [];
 var sources = [];
 
