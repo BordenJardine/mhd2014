@@ -65,11 +65,6 @@ function removeGravityFromAccel(){
     }
 }
 
-function accelToVelocity(){ //TODO
-    // for (var i=0; i<3; i++) {
-    //     velocity[i] = linear_acceleration[i];
-    // }
-}
 
 function round_and_stringify(num_array, rounding_mult){
     for (var i=0; i<num_array.length; i++){
@@ -179,11 +174,11 @@ function set_up_kalman(){
     var L = 10000;
 
     var x_0 = $V([0,0,0]); //$V([-10]);
-    // var P_0 = $M([
-    //     [L,0,0],
-    //     [0,L,0],
-    //     [0,0,L]
-    //     ]); //$M([[1]]);
+    var P_0 = $M([
+        [L,0,0],
+        [0,L,0],
+        [0,0,L]
+        ]); //$M([[1]]);
     // var P_0 = $M([
     //     [0,0,0],
     //     [0,0,0],
