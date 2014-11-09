@@ -2,15 +2,19 @@ var StemNode = function(x, y, path, done) {
   this.x = x;
   this.y = y;
   this.buffer;
+
+  this.angleGainNode = audioCtx.createGain();
+  this.angleGainNode.gain.value = 1.0;
+
   this.pannerNode = audioCtx.createPanner();
   this.pannerNode.panningModel = 'HRTF';
   this.pannerNode.distanceModel = 'inverse';
   this.pannerNode.setPosition(x, y, 0);
-  this.pannerNode.coneOuterAngle = 180;
-  this.pannerNode.innerAngle = 30; //these things don't seem to work
-  this.pannerNode.coneOuterGain = 0;
   this.pannerNode.rolloffFactor = 0.05;
-  this.pannerNode.connect(audioCtx.destination);
+
+  this.pannerNode.connect(this.angleGainNode);
+
+  this.angleGainNode.connect(audioCtx.destination);
 
   this.fabricate(function(){
     this.bufferSound(path, done);
@@ -53,17 +57,38 @@ StemNode.prototype.setAngle = function(degrees) {
 }
 
 StemNode.prototype.onRotate = function(e) {
+  this.updateAngleGain();
+};
+
+StemNode.prototype.updateAngleGain = function() {
   var rads = this.ui.angle * TO_RADIANS;
   var xDir = Math.cos(rads);
   var yDir = Math.sin(rads);
-  console.log('source', xDir, yDir);
-  this.pannerNode.setOrientation(xDir, yDir, 0);
-};
+
+  var distToListenerX = (listeners[0].ui.getLeft() - this.ui.getLeft());
+  var distToListenerY = (listeners[0].ui.getTop() - this.ui.getTop());
+  var distNorm = Math.sqrt(distToListenerX*distToListenerX + distToListenerY*distToListenerY);
+  distToListenerX = distToListenerX / distNorm;
+  distToListenerY = distToListenerY/ distNorm;
+  var distNorm2= Math.sqrt(distToListenerX*distToListenerX + distToListenerY*distToListenerY);
+
+  var dotProd = distToListenerX * xDir + distToListenerY * yDir;
+  var angle = 180 * Math.acos(dotProd) / Math.PI;
+
+  if(angle < 20) {
+    this.angleGainNode.gain.value = 1;
+  } else if (angle < 90) {
+    this.angleGainNode.gain.value = 1 - (angle - 20) / 70
+  } else {
+    this.angleGainNode.gain.value = 0;
+  }
+}
 
 StemNode.prototype.onMove = function(e) {
   this.x = this.ui.getLeft();
   this.y = this.ui.getTop();
   this.pannerNode.setPosition(this.x, this.y, 0);
+  this.updateAngleGain();
 };
 
 StemNode.prototype.fabricate = function(done) {

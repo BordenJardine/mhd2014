@@ -38,6 +38,9 @@ ListenerNode.prototype.onMove = function(e) {
   this.x = this.ui.getLeft();
   this.y = this.ui.getTop();
   this.audioListener.setPosition(this.x, this.y, 0);
+  sources.forEach(function(source){
+    source.updateAngleGain();
+  });
 };
 
 ListenerNode.prototype.fabricate = function(done) {
