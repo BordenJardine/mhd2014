@@ -13,7 +13,7 @@ var StemNode = function(x, y, path, done) {
   this.pannerNode.coneInnerAngle = 35;
   this.pannerNode.coneOuterAngle = 120;
   this.pannerNode.coneOuterGain = 0.1;
-  this.pannerNode.rolloffFactor = 0.05;
+  this.pannerNode.rolloffFactor = 0.05 / window.innerWidth / 320;
 
   this.pannerNode.connect(this.angleGainNode);
   this.angleGainNode.connect(audioCtx.destination);

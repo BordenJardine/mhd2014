@@ -59,6 +59,12 @@ window.onload = function(){
         height: maxY
       });
       canvas.renderAll();
+
+      if(sources) {
+        sources.forEach(function(source) {
+          source.pannerNode.rolloffFactor = 0.05 / window.innerWidth / 320;
+        });
+      }
     };
     window.onresize();
   });
