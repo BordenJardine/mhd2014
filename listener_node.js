@@ -1,8 +1,8 @@
 var ListenerNode = function(x, y, done) {
   this.x = x;
   this.y = y;
-  this.buffer;
-  this.pannerNode;
+  this.audioListener = audioCtx.listener;
+  this.audioListener.setPosition(x, y, 0);
 
   this.fabricate(done);
 };
@@ -10,6 +10,7 @@ var ListenerNode = function(x, y, done) {
 ListenerNode.prototype.setPosition = function(x,y) {
   this.x = x;
   this.y = y;
+  this.audioListener.setPosition(this.x, this.y, 0);
 };
 
 ListenerNode.prototype.fabricate = function(done) {
