@@ -7,6 +7,7 @@ var lookahead = 0.25;
 var maxX = window.innerWidth;
 var maxY = window.innerHeight - footerHeight;
 
+
 var speakerTemplate;
 var canvas = null;
 var audioCtx = null;
@@ -15,7 +16,7 @@ var filesToPlay = ['audio/jesu_joy/1.mp3', 'audio/jesu_joy/2.mp3', 'audio/jesu_j
 var listeners = [];
 var sources = [];
 
-window.onload = function(){
+var start = function(){
   audioCtx = new (window.AudioContext || webkitAudioContext)();
   canvas = new fabric.Canvas('audio-space');
   fabric.loadSVGFromURL("assets/speaker.svg", function(object, options) {
@@ -58,6 +59,9 @@ window.onload = function(){
     });
     listeners.push(listener);
   });
+
+  var overlay = document.getElementById('touchtostart');
+  overlay.parentNode.removeChild(overlay);
 };
 
 var createSourceNodes = function(done) {
