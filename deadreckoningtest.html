@@ -23,107 +23,18 @@ body {
     <h1>Accelerometer Javascript Test</h1>
     <div id="sphere"></div>
 <ul>
-<!--     <li>acceleration x: <span id="accelerationX"></span>g</li>
-    <li>acceleration y: <span id="accelerationY"></span>g</li>
-    <li>acceleration z: <span id="accelerationZ"></span>g</li> -->
 
-    <li>latitude: <span id="geolocation_lat"></span></li>
-    <li>longitude: <span id="geolocation_lon"></span></li>
-
-    <li>delta latitude: <span id="d_geolocation_lat"></span></li>
-    <li>delta longitude: <span id="d_geolocation_lon"></span></li>
-
-    <li>accuracy: <span id="accuracy"></span></li>
-    <li>heading: <span id="heading"></span></li>
-
-
-   <!--  <li>acceleration with gravity: <span id="accelerationWithGravity"></span></li>
-    <li>acceleration: <span id="acceleration"></span></li>
+    <li>acceleration with gravity: <span id="accelerationWithGravity"></span></li>
+    <li>linear acceleration: <span id="acceleration"></span></li>
     <li>velocity: <span id="velocity"></span></li>
     <li>position: <span id="position"></span></li>
 
-    <li>rotation alpha: <span id="rotationAlpha"></span>degree</li>
-    <li>rotation beta: <span id="rotationBeta"></span>degree</li>
-    <li>rotation gamma: <span id="rotationGamma"></span>degree</li> -->
+    <li>rotations: <span id="rotations"></span></li>
 </ul>
 
 test: <span id="test"></span>
 </div>
 <script type="text/javascript">
-//geo
-var browserSupportFlag = 'rad';
-var mylocation = 'okay';
-
-var prev_lat = 0;
-var prev_lon = 0;
-var rmult = 10000;
-
-console.log("ok");
-
-function doGeo(){
-    console.log('iyup')
-    if(navigator.geolocation) {
-        browserSupportFlag = true;
-        navigator.geolocation.watchPosition(function(position) {
-            console.log(position);
-
-          var cur_lat = position.coords.latitude;
-          var cur_lon = position.coords.longitude;
-
-          delta_lat = Math.abs(prev_lat - cur_lat);
-          delta_lon = Math.abs(prev_lon - cur_lon);
-
-          document.getElementById("geolocation_lat").innerHTML += "\n" + cur_lat;
-          document.getElementById("geolocation_lon").innerHTML += "\n" + cur_lon;
-          document.getElementById("d_geolocation_lat").innerHTML += "\n" + Math.round(rmult*delta_lat)/rmult;
-          document.getElementById("d_geolocation_lon").innerHTML += "\n\n" + Math.round(rmult*delta_lon)/rmult;
-          document.getElementById("accuracy").innerHTML += "\n\n" + position.coords.accuracy;
-          document.getElementById("heading").innerHTML += "\n\n" + position.coords.heading;
-
-          prev_lat = cur_lat;
-          prev_lon = cur_lon;
-        }, function() {
-          document.getElementById("geolocation_lat").innerHTML += "\n" + 'missed';
-           document.getElementById("geolocation_lon").innerHTML += "\n" + 'missed';
-        }, {enableHighAccuracy: true, });
-      }
-      else {
-        alert("Sorry, browser does not support geolocation!"); //TODO make flag
-      }
-  }
-
-// function showLocation(position){
-//     console.log("okay!");
-//     console.log(position);
-// }
-
-// function errorHandler(){
-//     console.log("error :( ");
-// }
-
-
-// function getLocationUpdate(){
-
-//    if(navigator.geolocation){
-//       // timeout at 60000 milliseconds (60 seconds)
-//       console.log("whee")
-//       var options = {enableHighAccuracy: true}; //timeout:60000};
-//       geoLoc = navigator.geolocation;
-//       watchID = geoLoc.getCurrentPosition(showLocation,
-//                                      errorHandler,
-//                                      options);
-//    }else{
-//       alert("Sorry, browser does not support geolocation!");
-//    }
-// }
-
-// getLocationUpdate();
-
-var interval = setInterval(function(){
-    doGeo();
-}, 3000);
-
-//endgeo
 
 var x = 0, y = 0,
     vx = 0, vy = 0,
