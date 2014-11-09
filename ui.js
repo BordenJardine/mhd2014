@@ -7,7 +7,8 @@ var speakerTemplate;
 var canvas = null;
 var audioCtx = null;
 
-var filesToPlay = ['ymo.mp3', 'ymo.mp3', 'ymo.mp3', 'ymo.mp3', 'ymo.mp3'];
+//var filesToPlay = ['ymo.mp3', 'ymo.mp3', 'ymo.mp3', 'ymo.mp3', 'ymo.mp3'];
+var filesToPlay = ['ymo.mp3'];
 var listeners = [];
 var sources = [];
 

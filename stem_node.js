@@ -3,9 +3,12 @@ var StemNode = function(x, y, path, done) {
   this.y = y;
   this.buffer;
   this.pannerNode = audioCtx.createPanner();
+  this.pannerNode.distanceModel = 'inverse';
   this.pannerNode.setPosition(x, y, 0);
-  this.pannerNode.coneOuterAngle = 0; //these things don't seem to work
-  this.pannerNode.coneOuterGain = 100;
+  this.pannerNode.coneOuterAngle = 0;
+  this.pannerNode.innerAngle = 360; //these things don't seem to work
+  this.pannerNode.coneOuterGain = 0;
+  this.pannerNode.rolloffFactor = 0.05;
   this.pannerNode.connect(audioCtx.destination);
 
   this.fabricate(function(){
