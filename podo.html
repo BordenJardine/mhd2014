@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Accelerometer Javascript Test</title>
+<meta name="viewport" content="width=device-width,user-scalable=yes" />
+<script type="text/javascript" src="js/kalman.js"></script>
+</head>
+
+<body>
+<div id="content">
+    <h1>Accelerometer Javascript Test</h1>
+    <div id="sphere"></div>
+<ul>
+    <li>steps: <span id="steps"></span></li>
+    <li>x: <span id="x"></span></li>
+    <li>y: <span id="y"></span></li>
+    <li>z: <span id="z"></span></li>
+    <li>heading: <span id="heading"></span></li>
+    <li>normalized accel: <span id="norm"></span></li>
+</ul>
+
+<script type="text/javascript">
+
+var gravity_alpha = 0.8;
+
+var acceleration_incl_grav = [null, null, null];
+var linear_acceleration = [null, null, null];
+var gravity = [0,0,0];
+var steps = 0;
+var stepTimeoutMax = 5;
+var stepTimeout = stepTimeoutMax;
+var thresh = 2;
+var total = 0;
+
+function removeGravityFromAccel(){
+    for (var i=0; i<3; i++) {
+        gravity[i] = gravity_alpha * gravity[i] + (1 - gravity_alpha) * acceleration_incl_grav[i];
+        linear_acceleration[i] = (acceleration_incl_grav[i] - gravity[i]);
+    }
+}
+
+if (window.DeviceMotionEvent != undefined) {
+  window.addEventListener('devicemotion', function(e) {
+    //Get acceleration!
+    acceleration_incl_grav[0] = e.accelerationIncludingGravity.x;
+    acceleration_incl_grav[1] = e.accelerationIncludingGravity.y;
+    acceleration_incl_grav[2] = e.accelerationIncludingGravity.z;
+    removeGravityFromAccel();
+
+    if(stepTimeout > 0) {
+      stepTimeout--;
+      return;
+    }
+    stepTimeout = stepTimeoutMax;
+    total = 0;
+    for(var i=0; i< linear_acceleration.length; i++) { //just add beta and gamma!
+      total += Math.pow(linear_acceleration[i], 2);
+    }
+    total = Math.pow(total, linear_acceleration.length);
+    if (total > thresh) {
+      steps++;
+    }
+    document.getElementById("steps").innerHTML = steps;
+    document.getElementById("norm").innerHTML = total;
+    document.getElementById("x").innerHTML = Math.pow(linear_acceleration[0], 2);
+    document.getElementById("y").innerHTML = Math.pow(linear_acceleration[1], 2);
+    document.getElementById("z").innerHTML = Math.pow(linear_acceleration[2], 2);
+  });
+}
+</script>
+
+</body>
+</html>

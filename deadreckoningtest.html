@@ -16,8 +16,8 @@ body {
     background-color: blue;
 }
 </style>
-<script type="text/javascript" src="sylvester.src.js"></script>
-<script type="text/javascript" src="kalman.js"></script>
+<script type="text/javascript" src="js/sylvester.src.js"></script>
+<script type="text/javascript" src="js/kalman.js"></script>
 </head>
 
 <body>
@@ -28,6 +28,9 @@ body {
 
     <li>acceleration with gravity: <span id="accelerationWithGravity"></span></li>
     <li>linear acceleration: <span id="acceleration"></span></li>
+    <li>x: <span id="x"></span></li>
+    <li>y: <span id="y"></span></li>
+    <li>z: <span id="z"></span></li>
     <!-- <li>velocity: <span id="velocity"></span></li> -->
     <li>position: <span id="position"></span></li>
     <li>linear position: <span id="linear_position"></span></li>
@@ -36,6 +39,7 @@ body {
     <li>calibrate: <span id="calibrate"></span></li>
     <li>steps: <span id="steps"></span></li>
     <li>heading: <span id="heading"></span></li>
+    <li>normalized accel: <span id="norm"></span></li>
 </ul>
 
 test: <span id="test"></span>
@@ -61,6 +65,7 @@ var linear_position = [null, null, null];
 var rotations = [null, null, null];
 var gravity = [0,0,0];
 var is_in_step = false;
+var steps = 0;
 
 function removeGravityFromAccel(){
     for (var i=0; i<3; i++) {
@@ -153,8 +158,8 @@ if (window.DeviceMotionEvent != undefined) {
         // console.log("Time delta: " + (Date.now() - timetime));
         timetime = Date.now();
 
-        ax = event.accelerationIncludingGravity.x * 5;
-        ay = event.accelerationIncludingGravity.y * 5;
+        ax = e.accelerationIncludingGravity.x * 5;
+        ay = e.accelerationIncludingGravity.y * 5;
 
         //Get acceleration!
         acceleration_incl_grav[0] = e.accelerationIncludingGravity.x;
@@ -177,6 +182,9 @@ if (window.DeviceMotionEvent != undefined) {
         document.getElementById("position").innerHTML = round_and_stringify(position, r_mult);
         document.getElementById("linear_position").innerHTML = round_and_stringify(linear_position, r_mult);
 
+        document.getElementById("x").innerHTML = Math.pow(linear_acceleration[0], 2);
+        document.getElementById("y").innerHTML = Math.pow(linear_acceleration[1], 2);
+        document.getElementById("z").innerHTML = Math.pow(linear_acceleration[2], 2);
         //TODO!
         if ( e.rotationRate ) {
             rotations[0] = e.rotationRate.alpha;
@@ -184,16 +192,18 @@ if (window.DeviceMotionEvent != undefined) {
             rotations[2] = e.rotationRate.gamma;
             document.getElementById("rotations").innerHTML = round_and_stringify(rotations, 1);
 
-            var thresh = 30;
+            var thresh = 2;
             var myTotal = 0;
-            for(var i=1; i<3; i++){ //just add beta and gamma!
-                myTotal += Math.abs(rotations[i]);
+            for(var i=0; i< linear_acceleration.length; i++){ //just add beta and gamma!
+            //    myTotal += Math.abs(rotations[i]);
+              myTotal += Math.pow(linear_acceleration[i], 2);
             }
             var step = false;
             if (myTotal > thresh) {
                 if (is_in_step == 0){
                     is_in_step = 1;
                     step = true;
+                    steps++;
                     console.log("step!");
                     document.getElementById("test").innerHTML += (step + "(" + Math.round(compassHeading(rotations)) + "); ");
                 } else {
@@ -204,7 +214,8 @@ if (window.DeviceMotionEvent != undefined) {
                 is_in_step = 0;
                 console.log("no step");
             }
-            document.getElementById("steps").innerHTML = step;
+            document.getElementById("steps").innerHTML = steps;
+            document.getElementById("norm").innerHTML = myTotal;
             document.getElementById("heading").innerHTML = Math.round(compassHeading(rotations));
             // document.getElementById("test").innerHTML += (step + "(" + rotations[0] + "); ");
         }
