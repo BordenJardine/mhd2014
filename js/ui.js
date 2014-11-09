@@ -12,12 +12,23 @@ var speakerTemplate;
 var canvas = null;
 var audioCtx = null;
 
-var filesToPlay = ['audio/jesu_joy/1.mp3', 'audio/jesu_joy/2.mp3', 'audio/jesu_joy/3.mp3', 'audio/jesu_joy/4.mp3'];
+var audioChoices = [
+  {key: "Default (5 sources)",
+   filesToPlay: ['audio/jesu_joy/1.mp3', 'audio/jesu_joy/2.mp3', 'audio/jesu_joy/3.mp3', 'audio/jesu_joy/4.mp3', 'audio/440.ogg']
+  },
+  {key: "Super annoying (10 sources)",
+    filesToPlay: ['audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg', 'audio/440.ogg']
+  },
+  {key: "Single (1 source)",
+  filesToPlay: ['audio/440.ogg']
+  }
+]
 var listeners = [];
 var sources = [];
 
 window.onload = function(){
   canvas = new fabric.Canvas('audio-space');
+
   fabric.loadSVGFromURL("assets/speaker.svg", function(object, options) {
     speakerTemplate = fabric.util.groupSVGElements(object, options);
     canvas.backgroundColor = "#313759";
@@ -59,15 +70,49 @@ var start = function(){
 
   audioCtx = new (window.AudioContext || webkitAudioContext)();
 
-  var listener = new ListenerNode(168,268, function(){
-    sources = createSourceNodes(function() {
-       playSourceNodes(audioCtx.currentTime + lookahead);
-    });
-  });
-  listeners.push(listener);
+  listAvailableAudioChoices();
+  resetAudio();
 };
 
-var createSourceNodes = function(done) {
+
+var resetAudio = function() {
+  var a = document.getElementById("audio_list");
+  var audio_index = a.options[a.selectedIndex].value;
+  var audio = audioChoices[audio_index];
+
+  // delete objects!!
+  for (var i=0; i < sources.length; i++){
+    sources[i].pannerNode.disconnect(0);
+    sources[i].ui.remove();
+  }
+  sources = [];
+
+  for (var i=0; i < listeners.length; i++){
+    listeners[i].ui.remove();
+  }
+  listeners = [];
+
+  var listener = new ListenerNode(168,268, function(){
+      sources = createSourceNodes(audio.filesToPlay, function() {
+         playSourceNodes(audioCtx.currentTime + lookahead);
+      });
+      window.setTimeout(circleUp, 100);
+    });
+  listeners.push(listener);
+}
+
+
+var listAvailableAudioChoices = function() {
+  var selectbox = document.getElementById("audio_list");
+  for (var i=0; i < audioChoices.length; i++){
+    var optn = document.createElement("OPTION");
+    optn.text = audioChoices[i].key;
+    optn.value = i;
+    selectbox.options.add(optn);
+  }
+}
+
+var createSourceNodes = function(filesToPlay, done) {
       var callbackCounter = 1;
 
       var checkDone = function() {
@@ -93,54 +138,68 @@ var playSourceNodes = function(time) {
 }
 
 var lineUp = function(){
+  var start = window.innerWidth * 0.125;
+  var len = window.innerWidth * 0.75;
   sources.forEach(function(source, i){
     source.setAngle(90);
     if(sources.length !== 1) {
-      source.setPosition(50 + i * 300 / (sources.length - 1), 160);
+      source.setPosition(start + i * len / (sources.length - 1), window.innerHeight * 0.25);
     } else {
-      source.setPosition(233, 120);
+      source.setPosition(window.innerWidth / 2, window.innerHeight * 0.25);
     }
   });
+  resetAcceleration();
 }
 
 var stack = function() {
+  centerX = window.innerWidth / 2;
+  centerY = window.innerHeight / 4;
+
   sources.forEach(function(source, i){
     source.setAngle(90);
     var offset = 10;
-    source.setPosition(200 - (sources.length - 1 * 5) + i * 10, i * 10 + 80);
+    source.setPosition(centerX - (sources.length - 1 * 5) + i * 10, i * 10 + centerY);
   });
+  resetAcceleration();
 }
 
 var semiCircle = function() {
+  var centerX = window.innerWidth / 2;
+  var centerY = window.innerHeight / 2 - footerHeight / 2;
+  var radius = Math.min(window.innerWidth, window.innerHeight - footerHeight) / 3;
   sources.forEach(function(source, i){
     if(sources.length !== 1) {
       var degrees = i * 180 / (sources.length - 1);
       source.setAngle(degrees);
       var radians = degrees / 180 * Math.PI;
-      var radius = 150;
-      var x = 200 - radius * Math.cos(radians);
-      var y = 288 - radius * Math.sin(radians);
+      var x = centerX - radius * Math.cos(radians);
+      var y = centerY - radius * Math.sin(radians);
       source.setPosition(x, y);
     } else {
       source.setAngle(90);
-      source.setPosition(233, 80);
+      source.setPosition(centerX, centerY - radius);
     }
   });
+  resetAcceleration();
 }
 
 var circleUp = function() {
+  var centerX = window.innerWidth / 2;
+  var centerY = window.innerHeight / 2 - footerHeight / 2;
+  var radius = Math.min(window.innerWidth, window.innerHeight - footerHeight) / 3;
+
   sources.forEach(function(source, i){
     if(sources.length !== 1) {
       var degrees = i * 360 / (sources.length);
       source.setAngle(degrees);
       var radians = degrees / 180 * Math.PI;
-      var radius = 150;
-      var x = 200 - radius * Math.cos(radians);
-      var y = 288 - radius * Math.sin(radians);
+      var x = centerX - radius * Math.cos(radians);
+      var y = centerY - radius * Math.sin(radians);
       source.setPosition(x, y);
     } else {
       source.setAngle(90);
-      source.setPosition(233, 80);
+      source.setPosition(centerX, centerY - radius);
     }
   });
+  resetAcceleration();
 }

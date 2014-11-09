@@ -15,7 +15,7 @@ var gravity_alpha = 0.8;
 
 var x, y;
 x = 168;
-y = 268;
+y = 168;
 var acceleration_incl_grav = [null, null, null];
 var linear_acceleration = [null, null, null];
 var position = [null, null, null];
@@ -61,7 +61,50 @@ var linear_KO_z = linear_Kalman_z[1];
 
 var timetime = Date.now();
 
-if (window.DeviceMotionEvent != undefined) {
+var resetAcceleration = function(){
+  Kalman_x = set_up_kalman();
+  KM_x = Kalman_x[0];
+  KO_x = Kalman_x[1];
+  Kalman_y = set_up_kalman();
+  KM_y = Kalman_y[0];
+  KO_y = Kalman_y[1];
+  Kalman_z = set_up_kalman();
+  KM_z = Kalman_z[0];
+  sKO_z = Kalman_z[1];
+  x = window.innerWidth / 2;
+  y = window.innerHeight / 2;
+  listeners[0].setPosition(x, y);
+}
+
+if (window.DeviceOrientationEvent) {
+  // Listen for the deviceorientation event and handle the raw data
+  window.addEventListener('deviceorientation', function(eventData) {
+    if (LISTENER_MODE != "Tilt"){
+        // console.log("not in tilt mode!");
+        return;
+    }
+
+    // gamma is the left-to-right tilt in degrees, where right is positive
+    var tiltLR = eventData.gamma;
+
+    // beta is the front-to-back tilt in degrees, where front is positive
+    var tiltFB = eventData.beta;
+
+    // alpha is the compass direction the device is facing in degrees
+    var dir = eventData.alpha
+    var d_t = .05;
+    var dimScale = 3;
+
+    x = window.innerWidth / 2 + tiltLR * dimScale;
+    y = window.innerHeight / 2 + tiltFB * dimScale;
+
+    // call our orientation event handler
+    if(listeners && listeners[0]) {
+      listeners[0].setAngle(dir);
+      listeners[0].setPosition(x,y);
+    }
+  }, false);
+} else if (window.DeviceMotionEvent != undefined) {
     window.ondevicemotion = function(e) {
 
         if (LISTENER_MODE != "Tilt"){
@@ -87,15 +130,13 @@ if (window.DeviceMotionEvent != undefined) {
         linear_position[1] = update_kalman(linear_KM_y, linear_KO_y, linear_acceleration[1]);
         linear_position[2] = update_kalman(linear_KM_z, linear_KO_z, linear_acceleration[2]);
 
-        var dimScale = 1;
-        if(!listeners[0].onXBoundary) {
-          x -= dimScale * linear_position[0];
-        }
-        if(!listeners[0].onYBoundary) {
-          y += dimScale * linear_position[1];
-        }
+        var dimScale = 10;
+
+        x = window.innerWidth / 2 + dimScale * linear_position[0];
+        y = window.innerHeight / 2 - dimScale * linear_position[1];
+
         if(listeners && listeners[0]) {
-          listeners[0].setPosition(x, y); //168 + dimScale * linear_position[0], 268 - dimScale * linear_position[1]);
+          listeners[0].setPosition(x, y); //, 268 - dimScale * linear_position[1]);
         }
         //TODO!
         if ( e.rotationRate ) {

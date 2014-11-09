@@ -17,21 +17,27 @@ ListenerNode.prototype.setPosition = function(x,y) {
   this.onYBoundary = yRes.onBoundary;
 
   x = xRes.value;
-  y = xRes.value;
+  y = yRes.value;
 
   this.ui.left = x;
   this.ui.top = y;
   this.ui.setCoords();
   this.onMove();
+  canvas.renderAll();
 };
 
+ListenerNode.prototype.setAngle = function(degrees) {
+  this.ui.angle = degrees;
+  this.onRotate();
+  canvas.renderAll();
+}
 
 ListenerNode.prototype.onRotate = function(e) {
   var rads = this.ui.angle * TO_RADIANS;
   var xDir = Math.cos(rads);
   var yDir = Math.sin(rads);
-  console.log('listener', xDir, yDir);
-  this.audioListener.setOrientation(xDir, yDir, -1, 0, 1, 0);
+
+  this.audioListener.setOrientation(xDir, yDir, 0, 0, 0, 1);
 };
 
 ListenerNode.prototype.onMove = function(e) {
@@ -46,6 +52,8 @@ ListenerNode.prototype.fabricate = function(done) {
     top: this.y,
     height: speakerSize * 0.75,
     width: speakerSize * 0.75,
+    originX: 'center',
+    originY: 'center',
     fill: "#BCBF50",
     stroke: "#2BADB1",
     strokeWidth: 3,
