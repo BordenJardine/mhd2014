@@ -8,8 +8,6 @@
   <script src="js/sylvester.src.js"></script>
   <script src="js/kalman.js"></script>
   <script src="js/accel.js"></script>
-
-
   <script src="js/ui.js"></script>
   <link rel="stylesheet" href="style.css"></link>
 </head>
@@ -20,11 +18,13 @@
     <button class='circle' onclick="circleUp()"></button>
     <button class='semicircle' onclick="semiCircle()"></button>
     <button class='stack' onclick="stack()"></button>
+  </br></br>
+      Audio: <select id="audio_list" onchange="resetAudio()"></select>
   </br>
       Listener mode: <input type="radio" name="listener_mode" onclick="setListenerMode();" value="Tilt" checked>Tilt</input>
       <input type="radio" name="listener_mode" onclick="setListenerMode();" value="Drag">Drag</input>
-    </br>
-      <select id="audio_list" onchange="resetAudio()"></select>
+      <input type="radio" name="listener_mode" onclick="setListenerMode();" value="Walk">Walk</input>
+
   </div>
   <div id="touchtostart" onclick='start()'>Touch To Start...</div>
 </body>
